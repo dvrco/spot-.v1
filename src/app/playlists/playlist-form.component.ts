@@ -1,14 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'playlist-form',
   template: `
-   <div class="card">
-  <div class="card-block">
-    <h4 class="card-title">Playlista</h4>
-    <p class="card-text">Opis playlisty</p>
-  </div>
-    <div class="card-block">
+        <div>
           <div class="form-group row">
           <label>Name:</label>
         <input type="text" [(ngModel)]="playlist.name" class="form-control">
@@ -27,10 +22,9 @@ import { Component, OnInit, Input } from '@angular/core';
           </label>
       </div>
       <div class="form-group row">
-        <button class="btn btn-success float-xs-rigth" (click)="save($event)">SAVE</button>
+        <button class="btn btn-success float-xs-rigth" (click)="save(playlist)">SAVE</button>
       </div>
     </div>
-  </div>
   `,
   styles: []
 })
@@ -38,6 +32,13 @@ export class PlaylistFormComponent implements OnInit {
 
   @Input()
   playlist;
+
+  @Output('saved')
+  onSave = new EventEmitter();
+
+  save(playlist){
+    this.onSave.emit(playlist)
+  }
 
   constructor() { }
 

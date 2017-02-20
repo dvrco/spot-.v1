@@ -8,12 +8,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaylistsComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-
   selected =null;
   edited = {
 
@@ -23,14 +17,19 @@ export class PlaylistsComponent implements OnInit {
 
   createNew(){
     this.mode = "edit";
-    var newPlaylist = {};
+    var newPlaylist = { 
+      name: '',
+      tracks: 0,
+      color: '#FF0000',
+      favourite: false
+    };
     this.selected = newPlaylist;
-    this.edited = newPlaylist;
+    this.edited = Object.assign({}, newPlaylist);
   }
 
 edit(playlist){
   this.mode = "edit";
-  this.edited = playlist;
+  this.edited = Object.assign({}, playlist);
   this.selected = playlist;
 
 }
@@ -45,6 +44,7 @@ select(playlist){
   playlists = [
   
      {
+      id: 1,
       name: 'Angular greatest hits ',
       tracks: 2,
       color: '#FF0000',
@@ -52,6 +52,7 @@ select(playlist){
     },
 
     {
+      id: 2,
       name: 'The best off the year',
       tracks: 23,
       color: '#0000FF',
@@ -60,11 +61,22 @@ select(playlist){
 
   ]
 
-  save(event){
-    console.log('Zapisano', event)
+  save(playlist){
+    if(playlist.id){
+      let index = this.playlists.findIndex((old_playlist)=>(
+          old_playlist === playlist.id
+      ))
+      this.playlists.splice(index, 1, playlist)
+    }else{
+       playlist.id = Date.now();
+       this.playlists.push(playlist);
+    }
   }
 
+ constructor() { }
 
+  ngOnInit() {
+  }
 
 
 
